@@ -45,6 +45,7 @@ Changelog = "https://github.com/julihocc/txttoqti/releases"
 
 [project.scripts]
 txttoqti = "txttoqti.cli:main"
+txttoqti-edu = "txttoqti.educational.cli:main"
 
 [build-system]
 requires = ["hatchling"]
