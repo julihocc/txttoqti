@@ -6,7 +6,7 @@ readme = "README.md"
 requires-python = ">=3.10"
 license = {text = "MIT"}
 authors = [
-    {name = "Educational Tools Team", email = "team@example.com"}
+    {name = "Educational Tools Team", email = "support@txttoqti.org"}
 ]
 keywords = ["qti", "canvas", "lms", "education", "quiz", "assessment"]
 classifiers = [
@@ -37,10 +37,11 @@ test = [
 ]
 
 [project.urls]
-Homepage = "https://github.com/username/txttoqti"
-Documentation = "https://github.com/username/txttoqti/docs"
-Repository = "https://github.com/username/txttoqti"
-Issues = "https://github.com/username/txttoqti/issues"
+Homepage = "https://github.com/julihocc/txttoqti"
+Documentation = "https://github.com/julihocc/txttoqti#readme"
+Repository = "https://github.com/julihocc/txttoqti"
+Issues = "https://github.com/julihocc/txttoqti/issues"
+Changelog = "https://github.com/julihocc/txttoqti/releases"
 
 [project.scripts]
 txttoqti = "txttoqti.cli:main"
