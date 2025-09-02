@@ -84,6 +84,14 @@ __all__ = [
     "__license__",
 ]
 
+# Educational extension exports (optional import)
+try:
+    from .educational import QtiConverter as EducationalQtiConverter
+    __all__.extend(["EducationalQtiConverter"])
+except ImportError:
+    # Educational extension not available
+    pass
+
 # Module-level convenience function
 def convert_txt_to_qti(txt_file, output_file=None, **kwargs):
     """
