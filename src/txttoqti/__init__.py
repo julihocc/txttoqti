@@ -33,12 +33,16 @@ from .qti_generator import QTIGenerator
 from .validator import QuestionValidator
 from .smart_converter import SmartConverter
 
+# Model exports
+from .models import Question, QuestionType, Choice, Assessment
+
 # Exception exports
 from .exceptions import (
     TxtToQtiError,
     ParseError,
     ValidationError,
     ConversionError,
+    FileError,
 )
 
 # Utility exports
@@ -56,11 +60,18 @@ __all__ = [
     "QuestionValidator",
     "SmartConverter",
     
+    # Models
+    "Question",
+    "QuestionType",
+    "Choice",
+    "Assessment",
+    
     # Exceptions
     "TxtToQtiError",
     "ParseError",
     "ValidationError", 
     "ConversionError",
+    "FileError",
     
     # Utilities
     "clean_text",
