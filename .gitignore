@@ -122,4 +122,13 @@ ehthumbs.db
 Thumbs.db
 
 # Custom ignores
-CLAUDE.md
+# QTI output files
+*.qti
+*.zip
+output_*.xml
+temp/
+tmp/
+
+# Configuration files with sensitive data
+config.local.*
+secrets.env
