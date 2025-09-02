@@ -1,0 +1,19 @@
+# Development dependencies for the txttoqti package
+
+# Testing framework
+pytest
+
+# Code quality tools
+flake8
+black
+
+# Documentation generation
+sphinx
+sphinx-rtd-theme
+
+# Type checking
+mypy
+
+# Additional tools
+isort
+pytest-cov
