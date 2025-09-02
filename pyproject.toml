@@ -1,25 +1,7 @@
-[tool]
+[project]
 name = "txttoqti"
-version = "1.0.0"
-description = "Universal converter from text-based question banks to Canvas LMS QTI packages"
-authors = ["Educational Tools Team <team@example.com>"]
-license = "MIT"
+version = "0.1.0"
+description = "Add your description here"
 readme = "README.md"
-homepage = "https://github.com/yourusername/txttoqti"
-repository = "https://github.com/yourusername/txttoqti"
-keywords = ["QTI", "Canvas", "converter", "education"]
-
-[build-system]
-requires = ["setuptools", "wheel"]
-build-backend = "setuptools.build_meta" 
-
-[tool.poetry.dependencies]
-python = "^3.6"
-
-[tool.poetry.dev-dependencies]
-pytest = "^6.0"
-black = "^21.0"
-flake8 = "^3.8"
-
-[tool.poetry.scripts]
-txttoqti = "txttoqti.cli:main"
+requires-python = ">=3.10"
+dependencies = []
