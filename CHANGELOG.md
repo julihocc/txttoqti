@@ -1,5 +1,30 @@
 # Changelog for txttoqti
 
+## [0.2.0] - 2025-09-02
+### Fixed
+- **CRITICAL**: Resolved API mismatch bug that made the package completely unusable
+- Fixed `AttributeError: 'QTIGenerator' object has no attribute 'generate'` by correcting method calls
+- Fixed file extension handling in conversion process (.qti vs .xml)
+
+### Added
+- Complete QTI 2.1 XML generation functionality with proper schema compliance
+- Comprehensive question validation system for all question types
+- Robust error handling and informative error messages
+- Backward compatibility methods to maintain API stability
+- Extensive test suite covering API fixes and end-to-end scenarios
+
+### Improved
+- Enhanced QTI generator with proper XML namespace handling
+- Better validation for multiple choice, true/false, and short answer questions
+- Improved code coverage and testing infrastructure
+- Added development dependencies for better testing experience
+
+### Technical Details
+- Replaced skeleton QTI generator implementation with full functionality
+- Added proper XML document structure with minidom formatting
+- Implemented comprehensive validation logic for all supported question types
+- Created extensive test coverage to prevent regression of critical bugs
+
 ## [1.0.0] - 2023-10-01
 ### Added
 - Initial release of the txttoqti package.
