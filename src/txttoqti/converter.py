@@ -16,9 +16,9 @@ Example Usage:
 """
 
 from pathlib import Path
-from typing import Optional, Dict, Any, List
-import tempfile
+from typing import Optional, Any
 import zipfile
+import uuid
 
 from .parser import QuestionParser
 from .qti_generator import QTIGenerator
@@ -48,7 +48,7 @@ class TxtToQtiConverter:
         txt_file: str, 
         output_file: Optional[str] = None, 
         **kwargs: Any
-    ) -> str:
+    ) -> Optional[str]:
         """
         Convert a text file containing questions to a QTI package.
 
@@ -96,11 +96,11 @@ class TxtToQtiConverter:
                 self.validator.validate(question)
             
             # Generate QTI
-            qti_xml = self.qti_generator.generate(questions)
+            qti_xml = self.qti_generator.generate_qti_xml(questions)
             
             # Create output ZIP file
             if output_file is None:
-                output_file = input_path.with_suffix('.qti').name
+                output_file = input_path.with_suffix('.zip').name
             
             output_path = Path(output_file)
             self._create_qti_package(qti_xml, output_path)
@@ -113,6 +113,37 @@ class TxtToQtiConverter:
         except Exception as e:
             self.logger.error(f"Unexpected error during conversion: {e}")
             raise ConversionError(f"Conversion failed: {e}", original_error=e)
+
+    def convert(self, qti_xml: str, output_file: Optional[str] = None) -> str:
+        """
+        Convert QTI XML content to a QTI package.
+
+        Args:
+            qti_xml: QTI XML content
+            output_file: Path for the output QTI ZIP file
+
+        Returns:
+            Path to the created QTI ZIP file
+
+        Raises:
+            ConversionError: If conversion process fails
+        """
+        try:
+            self.logger.info("Converting QTI XML to package")
+            
+            # Create output ZIP file
+            if output_file is None:
+                output_file = f"assessment_{uuid.uuid4().hex[:8]}.zip"
+            
+            output_path = Path(output_file)
+            self._create_qti_package(qti_xml, output_path)
+            
+            self.logger.info(f"Successfully created QTI package: {output_path}")
+            return str(output_path)
+            
+        except Exception as e:
+            self.logger.error(f"Unexpected error during QTI packaging: {e}")
+            raise ConversionError(f"QTI packaging failed: {e}", original_error=e)
 
     def _create_qti_package(self, qti_xml: str, output_path: Path) -> None:
         """
