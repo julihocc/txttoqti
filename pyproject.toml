@@ -6,7 +6,7 @@ readme = "README.md"
 requires-python = ">=3.10"
 license = {text = "MIT"}
 authors = [
-    {name = "Educational Tools Team", email = "support@txttoqti.org"}
+    {name = "Juliho C.C.", email = "julihocc@yahoo.com"}
 ]
 keywords = ["qti", "canvas", "lms", "education", "quiz", "assessment"]
 classifiers = [

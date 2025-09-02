@@ -18,12 +18,12 @@ Example Usage:
     >>> qti_file = converter.convert_file("questions.txt")
     >>> print(f"QTI package created: {qti_file}")
 
-Author: Educational Tools Team
+Author: Juliho C.C.
 License: MIT
 """
 
 __version__ = "0.1.1"
-__author__ = "Educational Tools Team"
+__author__ = "Juliho C.C."
 __license__ = "MIT"
 
 # Main API exports
