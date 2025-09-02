@@ -1,5 +1,31 @@
 # Changelog for txttoqti
 
+## [0.3.0] - 2025-09-02
+### Added
+- **NEW**: Educational Extension Module - Complete zero-configuration educational workflow
+- Auto-detection of course block structure from directory paths and filenames
+- Educational format conversion (Q1:/A)/B)/RESPUESTA: format to txttoqti format)
+- Smart change detection with MD5 checksums to avoid unnecessary regeneration
+- Enhanced educational CLI (`txttoqti-edu`) with interactive troubleshooting mode
+- Comprehensive test suite for educational extension (100+ test cases)
+- Educational examples and documentation with real-world usage patterns
+- Support for various directory naming conventions (bloque-X, block-X, modulo-X, etc.)
+
+### Enhanced
+- Added optional `EducationalQtiConverter` export to main package
+- Extended CLI with new `txttoqti-edu` entry point for educational workflows
+- Improved package structure with educational extension module
+- Added comprehensive documentation and examples for institutional usage
+
+### Technical Details
+- Added `txttoqti.educational` module with 6 core components
+- Implemented `QtiConverter` orchestration class with auto-detection
+- Added `BlockDetector` for intelligent course structure recognition  
+- Created `FormatConverter` for educational format bridge
+- Implemented `FileManager` with smart change detection
+- Added educational CLI with enhanced user experience
+- Created extensive test coverage for all educational components
+
 ## [0.2.0] - 2025-09-02
 ### Fixed
 - **CRITICAL**: Resolved API mismatch bug that made the package completely unusable

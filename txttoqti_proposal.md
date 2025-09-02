@@ -15,7 +15,7 @@ While developing a 15-week **"Data Science Applied to Football"** course for hig
 
 ## Proposed Solution: Educational Extension
 
-A **531-line educational orchestration layer** that wraps txttoqti v0.2.0+ with zero-configuration auto-detection and enhanced educational workflows.
+A **531-line educational orchestration layer** that wraps txttoqti v0.3.0+ with zero-configuration auto-detection and enhanced educational workflows.
 
 ### 🚀 Core Features
 
@@ -143,7 +143,7 @@ txttoqti/
 
 ### Option B: Separate `txttoqti-edu` Package
 - Companion package: `pip install txttoqti-edu`
-- Depends on `txttoqti>=0.2.0`
+- Depends on `txttoqti>=0.3.0`
 - Focused on educational/institutional use cases
 
 ### Option C: Educational Examples & Templates
@@ -154,7 +154,7 @@ txttoqti/
 ## Technical Specifications
 
 ### Dependencies
-- **txttoqti**: `>=0.2.0` (uses as underlying engine)
+- **txttoqti**: `>=0.3.0` (uses as underlying engine)
 - **Python**: `>=3.10` (for modern type hints and match statements)
 - **Standard library only**: `pathlib`, `re`, `hashlib`, `os`, `sys`
 
@@ -252,7 +252,7 @@ tests/educational/
 - [ ] Integrate existing code into txttoqti structure
 - [ ] Add comprehensive test suite  
 - [ ] Update documentation with educational examples
-- [ ] Ensure full compatibility with txttoqti v0.2.0+
+- [ ] Ensure full compatibility with txttoqti v0.3.0+
 
 ### Phase 2: Enhanced Features (1-2 weeks)
 - [ ] Add support for additional educational formats
