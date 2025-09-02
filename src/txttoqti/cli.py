@@ -18,12 +18,13 @@ Example:
 
 import argparse
 from .converter import TxtToQtiConverter
+from . import __version__
 
 def main():
     parser = argparse.ArgumentParser(description="Convert text-based question banks to QTI packages.")
     parser.add_argument('-i', '--input', required=True, help='Path to the input text file containing questions')
     parser.add_argument('-o', '--output', help='Path for the output QTI ZIP file')
-    parser.add_argument('-v', '--version', action='version', version='%(prog)s 1.0.0')
+    parser.add_argument('-v', '--version', action='version', version=f'%(prog)s {__version__}')
 
     args = parser.parse_args()
 
