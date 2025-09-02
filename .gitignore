@@ -132,3 +132,6 @@ tmp/
 # Configuration files with sensitive data
 config.local.*
 secrets.env
+.env
+.env.local
+.env.*.local
