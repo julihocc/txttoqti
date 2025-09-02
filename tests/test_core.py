@@ -1,6 +1,9 @@
 import unittest
-from txttoqti.converter import TxtToQtiConverter
-from txttoqti.exceptions import TxtToQtiError
+import sys
+import os
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..'))
+from src.txttoqti.converter import TxtToQtiConverter
+from src.txttoqti.exceptions import TxtToQtiError
 
 class TestTxtToQtiConverter(unittest.TestCase):
     

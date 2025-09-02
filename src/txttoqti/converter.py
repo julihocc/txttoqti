@@ -61,4 +61,3 @@ class TxtToQtiConverter:
         """
         # Implementation of the QTI generation logic goes here
         pass
-"""

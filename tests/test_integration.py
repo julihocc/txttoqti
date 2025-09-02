@@ -5,6 +5,9 @@ This file contains integration tests to ensure that different components of the 
 """
 
 import unittest
+import sys
+import os
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..'))
 from src.txttoqti.converter import TxtToQtiConverter
 from src.txttoqti.parser import QuestionParser
 from src.txttoqti.qti_generator import QTIGenerator

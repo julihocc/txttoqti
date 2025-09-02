@@ -58,4 +58,3 @@ class QTIGenerator:
         """
         # Implementation of XML validation logic goes here
         pass
-"""

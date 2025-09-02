@@ -91,4 +91,3 @@ def convert_txt_to_qti(txt_file, output_file=None, **kwargs):
     """
     converter = TxtToQtiConverter()
     return converter.convert_file(txt_file, output_file, **kwargs)
-"""

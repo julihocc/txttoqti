@@ -50,4 +50,3 @@ class SmartConverter:
         """
         # Implement change detection logic here
         pass
-"""
