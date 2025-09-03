@@ -1,12 +1,12 @@
 # Question Format Specification
 
-This document describes the supported question formats for the `txttoqti` package. The converter supports multiple question types and formats to accommodate different educational needs.
+This document describes the supported question format for the `txttoqti` package. The converter uses a standardized educational format to ensure consistency and ease of maintenance.
 
 ## Supported Question Types
 
 ### 1. Multiple Choice Questions
 
-#### Standard Format (Educational CLI)
+The txttoqti package uses a single, standardized educational format:
 
 ```
 Q1: What is the result of type(42) in Python?
@@ -17,77 +17,50 @@ D) <class 'number'>
 RESPUESTA: B
 ```
 
-#### Alternative Format (Basic CLI)
-
-```
-1. ¿Cuál es la capital de México?
-   - a) Guadalajara
-   - b) Monterrey
-   - c) Ciudad de México
-   - d) Cancún
-   - Respuesta correcta: c
-```
-
 ### 2. True/False Questions
 
 ```
-3. El océano Atlántico es el océano más grande del mundo.
-   - a) Verdadero
-   - b) Falso
-   - Respuesta correcta: b
-```
-
-Or using the educational format:
-
-```
-Q3: Python is a compiled language.
+Q2: Python is a compiled language.
 A) True
 B) False
 RESPUESTA: B
 ```
 
-### 3. Short Answer Questions
+### 3. Mixed Questions Example
 
 ```
-5. Nombra un país que tenga el español como idioma oficial.
-   - Respuesta correcta: [Respuesta abierta]
-```
+Q3: What is the capital of France?
+A) London
+B) Berlin
+C) Paris
+D) Madrid
+RESPUESTA: C
 
-```
-6. ¿Cuál es el símbolo químico del agua?
-   - Respuesta correcta: H2O
-```
-
-### 4. Essay Questions
-
-```
-8. Explica la importancia de la fotosíntesis en las plantas.
-   - Respuesta correcta: [Respuesta abierta]
+Q4: The Pacific Ocean is the largest ocean on Earth.
+A) True
+B) False
+RESPUESTA: A
 ```
 
 ## Format Rules and Guidelines
 
 ### Question Numbering
 
-- **Standard format**: Questions must start with `Q` followed by a number and colon: `Q1:`, `Q2:`, etc.
-- **Alternative format**: Questions can start with a number and period: `1.`, `2.`, etc.
-- Questions should be numbered sequentially
+Questions must start with `Q` followed by a number and colon: `Q1:`, `Q2:`, etc. Questions should be numbered sequentially starting from 1.
 
 ### Answer Options
 
 #### Multiple Choice Options
 
-- **Standard format**: Use capital letters with parentheses: `A)`, `B)`, `C)`, `D)`
-- **Alternative format**: Use lowercase letters with dashes: `- a)`, `- b)`, `- c)`, `- d)`
+- Use capital letters with parentheses: `A)`, `B)`, `C)`, `D)`
 - Each option should be on a separate line
-- Options should be indented consistently
+- Options should start immediately after the question line
 
 #### Correct Answer Indication
 
-- **Standard format**: Use `RESPUESTA: [LETTER]` (e.g., `RESPUESTA: B`)
-- **Alternative format**: Use `Respuesta correcta: [letter]` (e.g., `Respuesta correcta: c`)
-- The correct answer indicator should be on its own line
-- Case sensitivity: Match the format used in options (uppercase vs lowercase)
+- Use `RESPUESTA: [LETTER]` (e.g., `RESPUESTA: B`)
+- The correct answer indicator should be on its own line after all options
+- Use uppercase letters to match the format used in options
 
 ### Text Formatting
 
@@ -101,7 +74,7 @@ RESPUESTA: B
 - The correct answer should immediately follow the options
 
 #### Whitespace
-- Consistent indentation for readability (recommended: 3 spaces for alternative format)
+- No special indentation required
 - No trailing whitespace on lines
 
 ## Advanced Features
@@ -200,11 +173,12 @@ for question in questions:
 
 ## Best Practices
 
-1. **Consistency**: Use the same format throughout a question bank
+1. **Consistency**: Use the educational format throughout all question banks
 2. **Clarity**: Write clear, unambiguous questions and options
 3. **Testing**: Validate your format before conversion
 4. **Encoding**: Always save files in UTF-8 encoding
 5. **Backup**: Keep original text files as backup before conversion
+6. **Sequential Numbering**: Always start with Q1: and number sequentially
 
 ## Troubleshooting
 
