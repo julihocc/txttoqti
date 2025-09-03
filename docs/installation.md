@@ -1,57 +1,74 @@
 # Installation Instructions for txttoqti
 
-## Requisitos Previos
+## Prerequisites
 
-Antes de instalar `txttoqti`, asegúrate de tener instalado Python 3.6 o superior en tu sistema. Puedes verificar tu versión de Python ejecutando el siguiente comando en tu terminal:
+Before installing `txttoqti`, make sure you have Python 3.10 or higher installed on your system. You can check your Python version by running the following command in your terminal:
 
 ```bash
 python --version
 ```
 
-## Instalación
+## Installation from PyPI
 
-Para instalar el paquete `txttoqti`, puedes utilizar `pip`, el gestor de paquetes de Python. Abre tu terminal y ejecuta el siguiente comando:
+To install the `txttoqti` package, you can use `pip`, Python's package manager. Open your terminal and run the following command:
 
 ```bash
 pip install txttoqti
 ```
 
-## Instalación desde el Código Fuente
+## Installation from Source
 
-Si deseas instalar `txttoqti` desde el código fuente, sigue estos pasos:
+If you want to install `txttoqti` from source code, follow these steps:
 
-1. Clona el repositorio:
+1. Clone the repository:
 
    ```bash
-   git clone https://github.com/tu_usuario/txttoqti.git
+   git clone https://github.com/julihocc/txttoqti.git
    ```
 
-2. Navega al directorio del proyecto:
+2. Navigate to the project directory:
 
    ```bash
    cd txttoqti
    ```
 
-3. Instala el paquete utilizando `pip`:
+3. Install the package using `pip`:
 
    ```bash
    pip install .
    ```
 
-## Dependencias
+## Development Installation
 
-`txttoqti` no tiene dependencias externas, ya que utiliza solo la biblioteca estándar de Python. Sin embargo, si deseas contribuir al desarrollo del paquete, puedes instalar las dependencias de desarrollo listadas en `requirements-dev.txt`:
+For development, install the package in editable mode with development dependencies:
 
 ```bash
-pip install -r requirements-dev.txt
+pip install -e ".[dev]"
 ```
 
-## Verificación de la Instalación
+## Dependencies
 
-Para verificar que `txttoqti` se ha instalado correctamente, puedes ejecutar el siguiente comando en tu terminal:
+`txttoqti` has no external dependencies as it uses only Python's standard library. However, if you want to contribute to the package development, you can install the development dependencies:
+
+```bash
+pip install "txttoqti[dev]"
+```
+
+This will install testing and code quality tools like pytest, black, flake8, and mypy.
+
+## Installation Verification
+
+To verify that `txttoqti` has been installed correctly, you can run the following command in your terminal:
 
 ```bash
 python -c "import txttoqti; print(txttoqti.__version__)"
 ```
 
-Esto debería mostrar la versión instalada del paquete.
+This should display the installed version of the package.
+
+You can also test the CLI commands:
+
+```bash
+txttoqti --help
+txttoqti-edu --help
+```
