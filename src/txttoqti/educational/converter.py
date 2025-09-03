@@ -8,7 +8,6 @@ Author: Juliho C.C.
 License: MIT
 """
 
-import tempfile
 from pathlib import Path
 from typing import Optional, Dict, Any
 
@@ -17,7 +16,7 @@ from ..exceptions import ConversionError, FileError, ValidationError
 from ..logging_config import get_logger
 
 from .detector import BlockDetector
-from .formats import FormatConverter
+from .formats import FormatConverter  # Keep for validation only
 from .utils import FileManager
 
 
@@ -150,31 +149,15 @@ class QtiConverter:
                 if user_input != 'y':
                     return False
             
-            # Convert format to txttoqti compatible
-            with tempfile.NamedTemporaryFile(mode='w', suffix='.txt', delete=False, 
-                                           encoding='utf-8') as temp_file:
-                temp_path = temp_file.name
+            # Generate QTI directly using the updated parser that handles educational format
+            print(f"🔄 Converting {self.input_filename} to QTI format...")
+            qti_output = self.txttoqti_converter.convert_file(
+                str(input_path), str(output_path)
+            )
             
-            try:
-                converted_file = self.format_converter.convert_to_txttoqti_format(
-                    str(input_path), temp_path
-                )
-                
-                # Generate QTI using txttoqti
-                print(f"🔄 Converting {self.input_filename} to QTI format...")
-                qti_output = self.txttoqti_converter.convert_file(
-                    converted_file, str(output_path)
-                )
-                
-                print(f"✅ QTI file created: {qti_output}")
-                self.logger.info(f"Conversion completed successfully: {qti_output}")
-                return True
-                
-            finally:
-                # Clean up temporary file
-                temp_file_path = Path(temp_path)
-                if temp_file_path.exists():
-                    temp_file_path.unlink()
+            print(f"✅ QTI file created: {qti_output}")
+            self.logger.info(f"Conversion completed successfully: {qti_output}")
+            return True
         
         except Exception as e:
             error_msg = f"Conversion failed: {e}"
