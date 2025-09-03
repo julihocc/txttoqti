@@ -22,7 +22,7 @@ Author: Juliho C.C.
 License: MIT
 """
 
-__version__ = "0.1.2"
+__version__ = "0.3.0"
 __author__ = "Juliho C.C."
 __license__ = "MIT"
 
@@ -83,6 +83,14 @@ __all__ = [
     "__author__",
     "__license__",
 ]
+
+# Educational extension exports (optional import)
+try:
+    from .educational import QtiConverter as EducationalQtiConverter
+    __all__.extend(["EducationalQtiConverter"])
+except ImportError:
+    # Educational extension not available
+    pass
 
 # Module-level convenience function
 def convert_txt_to_qti(txt_file, output_file=None, **kwargs):
