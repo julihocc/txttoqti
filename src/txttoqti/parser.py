@@ -25,12 +25,11 @@ class QuestionParser:
         self.logger = get_logger(__name__)
         self.current_question_id = 0
         
-        # Regex patterns for different question formats
+        # Regex patterns for educational question format (Q1:, A), B), RESPUESTA: X)
         self.patterns = {
-            'numbered_question': re.compile(r'^\s*(\d+)\.\s*(.+)$'),
-            'choice': re.compile(r'^\s*-?\s*([a-d])\)\s*(.+)$', re.IGNORECASE),
-            'correct_answer': re.compile(r'^\s*-?\s*Respuesta correcta:\s*([a-d])\s*$', re.IGNORECASE),
-            'true_false': re.compile(r'^\s*-?\s*([ab])\)\s*(Verdadero|Falso)\s*$', re.IGNORECASE),
+            'numbered_question': re.compile(r'^\s*Q(\d+):\s*(.+)$'),
+            'choice': re.compile(r'^\s*([A-D])\)\s*(.+)$'),
+            'correct_answer': re.compile(r'^\s*RESPUESTA:\s*([A-D])\s*$'),
         }
 
     def parse(self, text: str) -> List[Question]:
@@ -76,7 +75,15 @@ class QuestionParser:
 
     def _parse_question_block(self, lines: List[str]) -> Tuple[Optional[Question], int]:
         """
-        Parse a block of lines that should contain a complete question.
+        Parse a block of lines that should contain a complete question in educational format.
+        
+        Educational format:
+            Q1: What is the result of type(42) in Python?
+            A) <class 'float'>
+            B) <class 'int'>
+            C) <class 'str'>
+            D) <class 'number'>
+            RESPUESTA: B
         
         Args:
             lines: List of lines starting from potential question
@@ -89,7 +96,7 @@ class QuestionParser:
         
         first_line = lines[0].strip()
         
-        # Check if this looks like a numbered question
+        # Check if this looks like a numbered question (Q1:, Q2:, etc.)
         match = self.patterns['numbered_question'].match(first_line)
         if not match:
             return None, 1
@@ -122,19 +129,14 @@ class QuestionParser:
             if self.patterns['numbered_question'].match(line):
                 break
             
-            # Check for choice
+            # Check for choice (A), B), C), D))
             choice_match = self.patterns['choice'].match(line)
             if choice_match:
-                choice_id = choice_match.group(1).lower()
+                choice_letter = choice_match.group(1)  # Keep uppercase for matching
                 choice_text = choice_match.group(2).strip()
                 
-                # Check if it's a true/false question
-                tf_match = self.patterns['true_false'].match(line)
-                if tf_match and choice_text.lower() in ['verdadero', 'falso']:
-                    question_type = QuestionType.TRUE_FALSE
-                
                 choices.append(Choice(
-                    id=f"{question_id}_{choice_id}",
+                    id=f"{question_id}_{choice_letter.lower()}",
                     text=choice_text,
                     is_correct=False
                 ))
@@ -142,10 +144,10 @@ class QuestionParser:
                 lines_consumed += 1
                 continue
             
-            # Check for correct answer indicator
+            # Check for correct answer indicator (RESPUESTA: A)
             correct_match = self.patterns['correct_answer'].match(line)
             if correct_match:
-                correct_choice = correct_match.group(1).lower()
+                correct_choice = correct_match.group(1)  # Keep uppercase for matching
                 i += 1
                 lines_consumed += 1
                 continue
@@ -157,7 +159,7 @@ class QuestionParser:
         # Mark the correct choice
         if correct_choice:
             for choice in choices:
-                if choice.id.endswith(f"_{correct_choice}"):
+                if choice.id.endswith(f"_{correct_choice.lower()}"):
                     choice.is_correct = True
                     break
         
