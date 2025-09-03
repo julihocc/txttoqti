@@ -1,0 +1,103 @@
+name: Test PyPI Publish
+
+on:
+  workflow_dispatch:
+    inputs:
+      version_suffix:
+        description: 'Version suffix for test release (e.g., rc1, dev1)'
+        required: false
+        default: 'dev'
+
+jobs:
+  test-publish:
+    name: Build and publish to TestPyPI
+    runs-on: ubuntu-latest
+    
+    environment:
+      name: testpypi
+      url: https://test.pypi.org/p/txttoqti
+
+    permissions:
+      id-token: write  # IMPORTANT: mandatory for trusted publishing
+
+    steps:
+    - uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: "3.10"
+
+    - name: Install build dependencies
+      run: |
+        python -m pip install --upgrade pip
+        python -m pip install build twine
+
+    - name: Modify version for test release
+      if: github.event.inputs.version_suffix != ''
+      run: |
+        # Get current version and add suffix
+        CURRENT_VERSION=$(python -c "import tomllib; print(tomllib.load(open('pyproject.toml', 'rb'))['project']['version'])")
+        NEW_VERSION="${CURRENT_VERSION}.${{ github.event.inputs.version_suffix }}${{ github.run_number }}"
+        
+        echo "Original version: $CURRENT_VERSION"
+        echo "New test version: $NEW_VERSION"
+        
+        # Update pyproject.toml
+        sed -i "s/version = \"$CURRENT_VERSION\"/version = \"$NEW_VERSION\"/" pyproject.toml
+        
+        # Update __init__.py
+        sed -i "s/__version__ = \"$CURRENT_VERSION\"/__version__ = \"$NEW_VERSION\"/" src/txttoqti/__init__.py
+        
+        echo "TEST_VERSION=$NEW_VERSION" >> $GITHUB_ENV
+
+    - name: Build package
+      run: python -m build
+
+    - name: Check distribution packages
+      run: python -m twine check dist/*
+
+    - name: List built packages
+      run: |
+        echo "Built packages:"
+        ls -la dist/
+
+    - name: Publish to TestPyPI
+      uses: pypa/gh-action-pypi-publish@release/v1
+      with:
+        repository-url: https://test.pypi.org/legacy/
+        verbose: true
+
+    - name: Test installation from TestPyPI
+      run: |
+        # Wait a bit for the package to be available
+        sleep 30
+        
+        # Try to install from TestPyPI
+        python -m pip install --index-url https://test.pypi.org/simple/ --extra-index-url https://pypi.org/simple/ txttoqti
+        
+        # Test the package
+        python -c "import txttoqti; print(f'txttoqti v{txttoqti.__version__} installed successfully from TestPyPI')"
+        
+        # Test CLI
+        txttoqti --help
+        txttoqti-edu --help
+
+    - name: Create test summary
+      run: |
+        echo "## TestPyPI Publish Summary" >> $GITHUB_STEP_SUMMARY
+        echo "" >> $GITHUB_STEP_SUMMARY
+        if [ -n "$TEST_VERSION" ]; then
+          echo "✅ **Test version published**: $TEST_VERSION" >> $GITHUB_STEP_SUMMARY
+        else
+          echo "✅ **Published current version to TestPyPI**" >> $GITHUB_STEP_SUMMARY
+        fi
+        echo "" >> $GITHUB_STEP_SUMMARY
+        echo "🔗 **TestPyPI URL**: https://test.pypi.org/project/txttoqti/" >> $GITHUB_STEP_SUMMARY
+        echo "" >> $GITHUB_STEP_SUMMARY
+        echo "### Installation Test" >> $GITHUB_STEP_SUMMARY
+        echo '```bash' >> $GITHUB_STEP_SUMMARY
+        echo 'pip install --index-url https://test.pypi.org/simple/ --extra-index-url https://pypi.org/simple/ txttoqti' >> $GITHUB_STEP_SUMMARY
+        echo '```' >> $GITHUB_STEP_SUMMARY
