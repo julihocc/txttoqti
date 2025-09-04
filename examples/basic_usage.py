@@ -10,7 +10,7 @@ Example Usage:
 
 """
 
-from src.txttoqti import convert_txt_to_qti
+from txttoqti import convert_txt_to_qti
 
 def main():
     # Path to the input text file containing questions
@@ -26,4 +26,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-"""
