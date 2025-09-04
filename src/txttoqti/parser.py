@@ -25,11 +25,11 @@ class QuestionParser:
         self.logger = get_logger(__name__)
         self.current_question_id = 0
         
-        # Regex patterns for educational question format (Q1:, A), B), RESPUESTA: X)
+        # Regex patterns for educational question format (Q1:, A), B), ANSWER: X)
         self.patterns = {
             'numbered_question': re.compile(r'^\s*Q(\d+):\s*(.+)$'),
             'choice': re.compile(r'^\s*([A-D])\)\s*(.+)$'),
-            'correct_answer': re.compile(r'^\s*RESPUESTA:\s*([A-D])\s*$'),
+            'correct_answer': re.compile(r'^\s*ANSWER:\s*([A-D])\s*$'),
         }
 
     def parse(self, text: str) -> List[Question]:
@@ -83,7 +83,7 @@ class QuestionParser:
             B) <class 'int'>
             C) <class 'str'>
             D) <class 'number'>
-            RESPUESTA: B
+            ANSWER: B
         
         Args:
             lines: List of lines starting from potential question
@@ -144,7 +144,7 @@ class QuestionParser:
                 lines_consumed += 1
                 continue
             
-            # Check for correct answer indicator (RESPUESTA: A)
+            # Check for correct answer indicator (ANSWER: A)
             correct_match = self.patterns['correct_answer'].match(line)
             if correct_match:
                 correct_choice = correct_match.group(1)  # Keep uppercase for matching
