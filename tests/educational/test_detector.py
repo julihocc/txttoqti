@@ -37,8 +37,8 @@ class TestBlockDetector(unittest.TestCase):
             block_num, input_file, output_file = BlockDetector.detect_block_info(block_dir)
             
             self.assertEqual(block_num, "3")
-            self.assertEqual(input_file, "preguntas-bloque-3.txt")
-            self.assertEqual(output_file, "bloque-3-canvas.zip")
+            self.assertEqual(input_file, "questions-block-3.txt")
+            self.assertEqual(output_file, "block-3-canvas.zip")
     
     def test_detect_block_from_directory_modulo(self):
         """Test block detection from 'modulo-X' directory pattern."""
@@ -79,8 +79,8 @@ class TestBlockDetector(unittest.TestCase):
             block_num, input_file, output_file = BlockDetector.detect_block_info(temp_dir_path)
             
             self.assertEqual(block_num, "4")
-            self.assertEqual(input_file, "preguntas-bloque-4.txt")
-            self.assertEqual(output_file, "bloque-4-canvas.zip")
+            self.assertEqual(input_file, "questions-block-4.txt")
+            self.assertEqual(output_file, "block-4-canvas.zip")
     
     def test_detect_block_from_script_file_path(self):
         """Test block detection when given a file path instead of directory."""

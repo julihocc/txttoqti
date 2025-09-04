@@ -108,7 +108,7 @@ RESPUESTA: B"""
                 output = captured_output.getvalue()
                 
                 self.assertIn("Block detection failed", output)
-                self.assertIn("bloque-1", output)  # Should suggest structure
+                self.assertIn("block-1", output)  # Should suggest structure
                 
             finally:
                 sys.stdout = sys.__stdout__
