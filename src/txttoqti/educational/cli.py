@@ -35,7 +35,7 @@ Supported Question Format:
   B) <class 'int'>
   C) <class 'str'>
   D) <class 'number'>
-  RESPUESTA: B
+  ANSWER: B
 
 The converter automatically detects your course block structure and
 converts questions to Canvas-compatible QTI format.
@@ -148,8 +148,8 @@ def run_interactive_mode(converter: QtiConverter) -> int:
     if "error" in file_info:
         print("❌ Block Detection Issues:")
         print("   The converter couldn't detect your course block structure.")
-        print("   Expected directory names: 'bloque-1', 'block-2', 'modulo-3', etc.")
-        print("   Or files named: 'preguntas-bloque-1.txt', 'questions-block-2.txt', etc.")
+        print("   Expected directory names: 'block-1', 'module-2', 'unit-3', etc.")
+        print("   Or files named: 'questions-block-1.txt', 'questions-module-2.txt', etc.")
         print()
         
         # Offer manual configuration

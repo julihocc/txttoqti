@@ -6,7 +6,7 @@ for academic institutions and course management workflows.
 
 Main Features:
 - Zero-configuration auto-detection of course structure
-- Educational format conversion (Q1:/A)/B)/RESPUESTA: format)
+- Educational format conversion (Q1:/A)/B)/ANSWER: format)
 - Smart change detection and batch processing
 - Enhanced educational CLI with progress reporting
 

@@ -67,8 +67,8 @@ class QtiConverter:
         """Display current conversion status and file information."""
         if not self.block_num:
             print("❌ Block detection failed")
-            print("   Ensure you're in a directory with block structure (e.g., 'bloque-1')")
-            print("   or have files named like 'preguntas-bloque-1.txt'")
+            print("   Ensure you're in a directory with block structure (e.g., 'block-1')")
+            print("   or have files named like 'questions-block-1.txt'")
             return
         
         print(f"📚 Block {self.block_num}: {self.block_description}")
