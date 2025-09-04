@@ -47,7 +47,7 @@ C) []
 D) ""
 RESPUESTA: C"""
         
-        questions_file = course_dir / "preguntas-bloque-1.txt"
+        questions_file = course_dir / "questions-block-1.txt"
         questions_file.write_text(questions_content)
         
         print(f"📁 Created course structure: {course_dir}")

@@ -1,53 +1,53 @@
 # Sample Questions for txttoqti Converter
 
-Q1: ¿Cuál es la capital de México?
+Q1: What is the capital of Mexico?
 A) Guadalajara
 B) Monterrey
-C) Ciudad de México
-D) Cancún
-RESPUESTA: C
+C) Mexico City
+D) Cancun
+ANSWER: C
 
-Q2: ¿Qué deporte se juega en una cancha de césped con una pelota ovalada?
-A) Fútbol
+Q2: What sport is played on a grass field with an oval ball?
+A) Soccer
 B) Rugby
-C) Baloncesto
-D) Tenis
-RESPUESTA: B
+C) Basketball
+D) Tennis
+ANSWER: B
 
-Q3: El océano Atlántico es el océano más grande del mundo.
-A) Verdadero
-B) Falso
-RESPUESTA: B
+Q3: The Atlantic Ocean is the largest ocean in the world.
+A) True
+B) False
+ANSWER: B
 
-Q4: La Tierra gira alrededor del Sol.
-A) Verdadero
-B) Falso
-RESPUESTA: A
+Q4: The Earth revolves around the Sun.
+A) True
+B) False
+ANSWER: A
 
 Q5: What is the result of type(42) in Python?
 A) <class 'float'>
 B) <class 'int'>
 C) <class 'str'>
 D) <class 'number'>
-RESPUESTA: B
+ANSWER: B
 
-Q6: ¿Cuál es el símbolo químico del agua?
+Q6: What is the chemical symbol for water?
 A) H2O
 B) CO2
 C) NaCl
 D) CH4
-RESPUESTA: A
+ANSWER: A
 
 Q7: Which of the following creates a list in Python?
 A) {}
 B) ()
 C) []
 D) ""
-RESPUESTA: C
+ANSWER: C
 
 Q8: What does the len() function return for len("Python")?
 A) 5
 B) 6
 C) 7
 D) Error
-RESPUESTA: B
+ANSWER: B
