@@ -14,7 +14,7 @@ A) <class 'float'>
 B) <class 'int'>
 C) <class 'str'>
 D) <class 'number'>
-RESPUESTA: B
+ANSWER: B
 ```
 
 ### 2. True/False Questions
@@ -23,7 +23,7 @@ RESPUESTA: B
 Q2: Python is a compiled language.
 A) True
 B) False
-RESPUESTA: B
+ANSWER: B
 ```
 
 ### 3. Mixed Questions Example
@@ -34,12 +34,12 @@ A) London
 B) Berlin
 C) Paris
 D) Madrid
-RESPUESTA: C
+ANSWER: C
 
 Q4: The Pacific Ocean is the largest ocean on Earth.
 A) True
 B) False
-RESPUESTA: A
+ANSWER: A
 ```
 
 ## Format Rules and Guidelines
@@ -58,7 +58,7 @@ Questions must start with `Q` followed by a number and colon: `Q1:`, `Q2:`, etc.
 
 #### Correct Answer Indication
 
-- Use `RESPUESTA: [LETTER]` (e.g., `RESPUESTA: B`)
+- Use `ANSWER: [LETTER]` (e.g., `ANSWER: B`)
 - The correct answer indicator should be on its own line after all options
 - Use uppercase letters to match the format used in options
 
@@ -87,7 +87,7 @@ A) Hello World
 B) HelloWorld
 C) Hello+World
 D) Error
-RESPUESTA: B
+ANSWER: B
 ```
 
 ### Questions with Special Characters
@@ -98,7 +98,7 @@ A) dict = []
 B) dict = {}
 C) dict = ()
 D) dict = ""
-RESPUESTA: B
+ANSWER: B
 ```
 
 ### Questions with Mathematical Expressions
@@ -109,14 +109,14 @@ A) ^
 B) **
 C) *
 D) exp()
-RESPUESTA: B
+ANSWER: B
 ```
 
 ## File Structure Requirements
 
 ### File Naming
 - Recommended: `questions.txt`, `sample_questions.txt`
-- Educational format: `preguntas-bloque-[NUMBER].txt` or `questions-block-[NUMBER].txt`
+- Educational format: `questions-block-[NUMBER].txt` or `questions-module-[NUMBER].txt`
 
 ### File Organization
 - One question bank per file
@@ -134,7 +134,7 @@ A) <class 'float'>
 B) <class 'int'>
 C) <class 'str'>
 D) <class 'number'>
-RESPUESTA: B
+ANSWER: B
 ```
 
 ## Validation and Error Handling
