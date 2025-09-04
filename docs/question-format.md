@@ -1,12 +1,12 @@
 # Question Format Specification
 
-This document describes the supported question format for the `txttoqti` package. The converter uses a standardized educational format to ensure consistency and ease of maintenance.
+This document describes the supported question format for the `txttoqti` package. The converter uses a single, standardized format to ensure consistency and ease of maintenance.
 
 ## Supported Question Types
 
 ### 1. Multiple Choice Questions
 
-The txttoqti package uses a single, standardized educational format:
+The txttoqti package uses a single, standardized format:
 
 ```
 Q1: What is the result of type(42) in Python?
@@ -116,7 +116,7 @@ ANSWER: B
 
 ### File Naming
 - Recommended: `questions.txt`, `sample_questions.txt`
-- Educational format: `questions-block-[NUMBER].txt` or `questions-module-[NUMBER].txt`
+- Block format: `questions-block-[NUMBER].txt` or `questions-module-[NUMBER].txt`
 
 ### File Organization
 - One question bank per file
@@ -173,7 +173,7 @@ for question in questions:
 
 ## Best Practices
 
-1. **Consistency**: Use the educational format throughout all question banks
+1. **Consistency**: Use the standardized format throughout all question banks
 2. **Clarity**: Write clear, unambiguous questions and options
 3. **Testing**: Validate your format before conversion
 4. **Encoding**: Always save files in UTF-8 encoding
