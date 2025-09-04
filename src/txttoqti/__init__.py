@@ -22,7 +22,7 @@ Author: Juliho C.C.
 License: MIT
 """
 
-__version__ = "0.3.0"
+__version__ = "0.4.0"
 __author__ = "Juliho C.C."
 __license__ = "MIT"
 
