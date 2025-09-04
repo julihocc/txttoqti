@@ -24,30 +24,16 @@ A) True
 B) False
 ANSWER: A
 
-Q5: What is the result of type(42) in Python?
-A) <class 'float'>
-B) <class 'int'>
-C) <class 'str'>
-D) <class 'number'>
-ANSWER: B
-
-Q6: What is the chemical symbol for water?
+Q5: What is the chemical symbol for water?
 A) H2O
 B) CO2
 C) NaCl
 D) CH4
 ANSWER: A
 
-Q7: Which of the following creates a list in Python?
+Q6: Which of the following creates a list in Python?
 A) {}
 B) ()
 C) []
 D) ""
 ANSWER: C
-
-Q8: What does the len() function return for len("Python")?
-A) 5
-B) 6
-C) 7
-D) Error
-ANSWER: B
