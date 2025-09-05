@@ -4,54 +4,90 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-txttoqti is a Python package that converts text-based question banks into QTI (Question & Test Interoperability) packages compatible with Canvas LMS. The project uses only Python standard library dependencies and follows a modular architecture.
+txttoqti is a Python package that converts text-based question banks into QTI (Question & Test Interoperability) packages compatible with Canvas LMS. The project uses only Python standard library dependencies and follows a modular architecture with dual interfaces: a basic converter and an enhanced educational extension.
 
 ## Commands
 
 ### Development and Testing
-- `python -m pytest tests/` - Run all unit tests
-- `python -m unittest tests.test_core` - Run core functionality tests  
-- `python -m unittest tests.test_integration` - Run integration tests
-- `pip install -e .` - Install package in development mode
-- `python main.py` - Run the basic entry point
+- `python -m pytest` - Run all unit tests with coverage (configured in pyproject.toml)
+- `python -m pytest --cov=src/txttoqti --cov-report=term-missing --cov-report=html` - Run tests with detailed coverage
+- `python -m pytest tests/` - Run specific test directory
+- `make test` - Run tests with coverage via Makefile
+- `make test-fast` - Run tests without coverage
+- `python scripts/dev.py test` - Alternative test runner
+
+### Code Quality and Formatting
+- `make lint` - Run flake8 and mypy linting
+- `make format` - Format code with black
+- `python -m black src tests scripts` - Format specific directories
+- `python -m flake8 src tests` - Run flake8 linting
+- `python -m mypy src` - Run type checking
+
+### Package Management
+- `pip install -e ".[dev]"` - Install in development mode with dev dependencies
+- `make install-dev` - Install development dependencies
+- `make build` - Build package for distribution
+- `make clean` - Clean build artifacts and cache files
 
 ### CLI Usage
-- `python -m txttoqti.cli -i questions.txt -o output.qti` - Convert text file to QTI package
-- `python -m txttoqti.cli --help` - Show CLI help
+- `txttoqti -i questions.txt -o output.zip` - Basic conversion (installed package)
+- `txttoqti-edu` - Educational CLI with auto-detection
+- `python -m txttoqti.cli -i questions.txt -o output.zip` - Module execution
+- `python -m txttoqti.educational.cli` - Educational module execution
 
-### Package Installation
-- `pip install .` - Install the package from source
+### Publishing (Development)
+- `./scripts/publish.sh test` - Publish to TestPyPI
+- `./scripts/publish.sh prod` - Publish to production PyPI
 
 ## Architecture
 
-The codebase follows a clean separation of concerns with these core modules:
+The codebase follows a layered architecture with clear separation between core conversion logic and educational workflows.
 
 ### Core Components (src/txttoqti/)
-- **converter.py**: Main `TxtToQtiConverter` class that orchestrates the conversion process
-- **parser.py**: `QuestionParser` handles text parsing and question extraction  
-- **qti_generator.py**: `QTIGenerator` creates QTI-compliant XML and ZIP packages
-- **validator.py**: `QuestionValidator` validates question formats and content
-- **smart_converter.py**: `SmartConverter` provides change detection and incremental updates
-- **cli.py**: Command-line interface with argparse integration
+- **converter.py**: Main `TxtToQtiConverter` orchestrates the entire conversion pipeline
+- **parser.py**: `QuestionParser` handles text parsing and question extraction with validation
+- **qti_generator.py**: `QTIGenerator` creates QTI-compliant XML structures and ZIP packages
+- **validator.py**: `QuestionValidator` provides comprehensive question format validation
+- **smart_converter.py**: `SmartConverter` adds change detection and incremental updates
+- **models.py**: Data models (`Question`, `Choice`, `Assessment`) with `QuestionType` enum
+- **cli.py**: Basic command-line interface with argparse
 
-### Supporting Modules  
-- **exceptions.py**: Custom exception classes (TxtToQtiError, ParseError, ValidationError, ConversionError)
-- **utils.py**: Utility functions for text cleaning, file validation, and timestamps
-- **__init__.py**: Package exports and convenience function `convert_txt_to_qti()`
+### Educational Extension (src/txttoqti/educational/)
+The educational package provides a higher-level interface designed for academic workflows:
+- **converter.py**: `QtiConverter` with auto-detection and zero-configuration setup
+- **detector.py**: `BlockDetector` automatically identifies course structure and file patterns
+- **formats.py**: `FormatConverter` handles educational format conversions (Q1:/A)/B)/ANSWER:)
+- **utils.py**: `FileManager` provides batch processing and file management utilities
+- **cli.py**: Enhanced CLI with interactive features and progress reporting
 
-### Question Format
-Questions are parsed from text files using a structured format with numbered questions, multiple choice options (a, b, c, d), and correct answer indicators. See `examples/sample_questions.txt` for the expected format.
+### Supporting Infrastructure
+- **exceptions.py**: Hierarchical exception system (TxtToQtiError, ParseError, ValidationError, ConversionError, FileError)
+- **utils.py**: Core utilities (clean_text, validate_file, get_file_timestamp)
+- **logging_config.py**: Centralized logging configuration
+- **__init__.py**: Package exports with educational extension auto-import
 
-### Entry Points
-- Programmatic: Import `TxtToQtiConverter` or use `convert_txt_to_qti()` function
-- CLI: `python -m txttoqti.cli` with input/output arguments
-- Basic: `main.py` provides simple "Hello from txttoqti!" entry point
+### Entry Points and Interfaces
+The package provides multiple interfaces:
+1. **Programmatic API**: Import classes directly or use `convert_txt_to_qti()` convenience function
+2. **Basic CLI** (`txttoqti`): Direct file conversion with explicit input/output paths
+3. **Educational CLI** (`txttoqti-edu`): Auto-detecting interface for academic environments
+4. **Module execution**: `python -m txttoqti.cli` and `python -m txttoqti.educational.cli`
 
-### Testing Structure
-- `tests/test_core.py`: Unit tests for core converter functionality
-- `tests/test_integration.py`: Integration tests for end-to-end workflows
-- Test files expect sample data in `tests/` directory
+### Question Format Support
+- **Standard Format**: Q1:/A)/B)/RESPUESTA: pattern with numbered questions and lettered choices
+- **Multiple Choice**: A/B/C/D format with single correct answer identification
+- **Educational Formats**: Auto-detection of common academic question patterns
+- **Validation**: Comprehensive format checking with detailed error reporting
 
-## Development Notes
+### Testing Architecture
+- **tests/test_core.py**: Unit tests for core converter functionality
+- **tests/test_integration.py**: End-to-end integration tests
+- **tests/educational/**: Specialized tests for educational extension
+- **Coverage**: Configured for src/txttoqti with HTML and terminal reporting
+- **Pytest configuration**: Centralized in pyproject.toml with strict markers and verbose output
 
-The project is in active development with skeleton implementations. Most core classes have method signatures defined but require implementation. The package is designed to be lightweight with no external dependencies beyond Python standard library.
+### Build and Distribution
+- **pyproject.toml**: Modern Python packaging with optional dependencies (dev, test)
+- **Scripts**: `txttoqti` and `txttoqti-edu` entry points for installed package
+- **Makefile**: Development workflow commands
+- **Publishing**: Secure token-based publishing to PyPI via scripts/publish.sh
