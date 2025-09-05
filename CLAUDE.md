@@ -68,10 +68,41 @@ The educational package provides a higher-level interface designed for academic 
 
 ### Entry Points and Interfaces
 The package provides multiple interfaces:
-1. **Programmatic API**: Import classes directly or use `convert_txt_to_qti()` convenience function
-2. **Basic CLI** (`txttoqti`): Direct file conversion with explicit input/output paths
-3. **Educational CLI** (`txttoqti-edu`): Auto-detecting interface for academic environments
-4. **Module execution**: `python -m txttoqti.cli` and `python -m txttoqti.educational.cli`
+1. **New Intuitive API** (recommended): `TxtToQti` class with `.read_txt()` and `.save_to_qti()` methods
+2. **Quick Conversion**: `quick_convert()` function for one-line usage
+3. **Legacy API**: Original `TxtToQtiConverter` (still supported)
+4. **Basic CLI** (`txttoqti`): Direct file conversion with explicit input/output paths
+5. **Educational CLI** (`txttoqti-edu`): Auto-detecting interface for academic environments
+6. **Module execution**: `python -m txttoqti.cli` and `python -m txttoqti.educational.cli`
+
+#### New Intuitive Interface Usage
+```python
+import txttoqti
+
+# Create converter object
+converter = txttoqti.TxtToQti()
+
+# Load questions from file
+converter.read_txt("questions.txt")
+
+# Or load from string
+converter.read_string(question_text)
+
+# Save to QTI package
+converter.save_to_qti("quiz.zip")
+
+# Additional methods
+print(f"Loaded {len(converter)} questions")
+print(converter.preview())
+converter.validate()
+converter.clear()
+
+# Method chaining support
+converter.read_txt("questions.txt").save_to_qti("output.zip")
+
+# Quick conversion
+txttoqti.quick_convert("questions.txt", "quiz.zip")
+```
 
 ### Question Format Support
 - **Standard Format**: Q1:/A)/B)/RESPUESTA: pattern with numbered questions and lettered choices
@@ -82,9 +113,13 @@ The package provides multiple interfaces:
 ### Testing Architecture
 - **tests/test_core.py**: Unit tests for core converter functionality
 - **tests/test_integration.py**: End-to-end integration tests
+- **tests/test_txttoqti_interface.py**: Tests for the new TxtToQti interface
+- **tests/test_e2e.py**: End-to-end scenario tests
+- **tests/test_fix.py**: Regression and bug fix verification tests
 - **tests/educational/**: Specialized tests for educational extension
 - **Coverage**: Configured for src/txttoqti with HTML and terminal reporting
 - **Pytest configuration**: Centralized in pyproject.toml with strict markers and verbose output
+- **Organization**: All test files are properly contained within the tests/ directory
 
 ### Build and Distribution
 - **pyproject.toml**: Modern Python packaging with optional dependencies (dev, test)

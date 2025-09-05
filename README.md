@@ -30,13 +30,27 @@ pip install .
 
 ### Basic Usage
 
-**Python API:**
+**New Intuitive Python API (Recommended):**
 ```python
-from txttoqti import convert_txt_to_qti
+import txttoqti
 
-# Simple conversion
-qti_file = convert_txt_to_qti("questions.txt")
-print(f"QTI package created: {qti_file}")
+# Create converter object
+converter = txttoqti.TxtToQti()
+
+# Load questions from file
+converter.read_txt("questions.txt")
+
+# Save to QTI package  
+converter.save_to_qti("quiz.zip")
+
+# Or chain methods together
+converter.read_txt("questions.txt").save_to_qti("quiz.zip")
+```
+
+**Quick One-Line Conversion:**
+```python
+import txttoqti
+txttoqti.quick_convert("questions.txt", "quiz.zip")
 ```
 
 **Command Line:**
@@ -58,7 +72,7 @@ A) <class 'float'>
 B) <class 'int'>
 C) <class 'str'>
 D) <class 'number'>
-RESPUESTA: B
+ANSWER: B
 ```
 
 ## Documentation
@@ -96,7 +110,57 @@ txttoqti-edu --force       # Force regeneration
 
 ## Advanced Features
 
-### Smart Conversion
+### Working with Multiple Files
+```python
+import txttoqti
+from pathlib import Path
+
+converter = txttoqti.TxtToQti()
+
+# Process multiple files
+for txt_file in Path("questions").glob("*.txt"):
+    output_name = txt_file.stem + ".zip"
+    converter.read_txt(txt_file).save_to_qti(output_name).clear()
+```
+
+### Validation and Preview
+```python
+import txttoqti
+
+converter = txttoqti.TxtToQti()
+converter.read_txt("questions.txt")
+
+# Check what was loaded
+print(f"Loaded {len(converter)} questions")
+print(converter.preview())
+
+# Validate before saving
+if converter.validate():
+    converter.save_to_qti("validated_quiz.zip")
+```
+
+### Working with Strings
+```python
+import txttoqti
+
+# Load questions from a string (useful for dynamic content)
+questions_text = """
+Q1: What is Python?
+A) A snake
+B) A programming language
+C) A tool
+D) A framework
+ANSWER: B
+"""
+
+converter = txttoqti.TxtToQti()
+converter.read_string(questions_text)
+converter.save_to_qti("string_quiz.zip")
+```
+
+### Legacy Interfaces (Still Supported)
+
+#### Smart Conversion
 ```python
 from txttoqti import SmartConverter
 
@@ -105,7 +169,7 @@ converter = SmartConverter()
 qti_file = converter.convert_file("questions.txt")
 ```
 
-### Educational Workflows
+#### Educational Workflows
 ```python
 from txttoqti.educational import QtiConverter
 
@@ -113,14 +177,12 @@ converter = QtiConverter()  # Auto-detects course structure
 success = converter.convert()
 ```
 
-### Batch Processing
+#### Original API
 ```python
 from txttoqti import TxtToQtiConverter
-from pathlib import Path
 
 converter = TxtToQtiConverter()
-for txt_file in Path("questions").glob("*.txt"):
-    converter.convert_file(str(txt_file))
+qti_file = converter.convert_file("questions.txt")
 ```
 
 ## Requirements
