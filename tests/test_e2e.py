@@ -8,7 +8,7 @@ import os
 from pathlib import Path
 
 # Add src to path
-sys.path.insert(0, str(Path(__file__).parent / "src"))
+sys.path.insert(0, str(Path(__file__).parent.parent / "src"))
 
 def test_original_bug_scenario():
     """Test the exact scenario described in the bug report."""
