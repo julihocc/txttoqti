@@ -13,10 +13,18 @@ Main Features:
 - No external dependencies (uses only Python standard library)
 
 Example Usage:
+    >>> import txttoqti
+    >>> converter = txttoqti.TxtToQti()
+    >>> converter.read_txt("questions.txt")
+    >>> converter.save_to_qti("quiz.zip")
+
+Quick conversion:
+    >>> txttoqti.quick_convert("questions.txt", "quiz.zip")
+
+Legacy interface (still supported):
     >>> from txttoqti import TxtToQtiConverter
     >>> converter = TxtToQtiConverter()
     >>> qti_file = converter.convert_file("questions.txt")
-    >>> print(f"QTI package created: {qti_file}")
 
 Author: Juliho C.C.
 License: MIT
@@ -26,7 +34,10 @@ __version__ = "0.4.0"
 __author__ = "Juliho C.C."
 __license__ = "MIT"
 
-# Main API exports
+# Main API exports - New intuitive interface (recommended)
+from .txttoqti import TxtToQti, quick_convert
+
+# Legacy API exports (still supported)
 from .converter import TxtToQtiConverter
 from .parser import QuestionParser
 from .qti_generator import QTIGenerator
@@ -53,7 +64,11 @@ from .utils import (
 )
 
 __all__ = [
-    # Main classes
+    # Main interface (recommended)
+    "TxtToQti",
+    "quick_convert",
+    
+    # Legacy classes (still supported)
     "TxtToQtiConverter",
     "QuestionParser", 
     "QTIGenerator",
