@@ -3,14 +3,17 @@ Educational Format Converter
 
 Handles conversion between educational question formats and txttoqti-compatible format.
 Supports the common educational format: Q1: A) B) C) D) RESPUESTA: X
+Also supports Scantron CSV format for Canvas LMS import.
 
 Author: Juliho C.C.
 License: MIT
 """
 
 import re
-from typing import List, Tuple
+import csv
+from typing import List, Tuple, Dict, Any
 from pathlib import Path
+from io import StringIO
 
 
 class FormatConverter:
@@ -115,3 +118,136 @@ class FormatConverter:
         
         is_valid = len(errors) == 0
         return is_valid, errors
+
+
+class CsvConverter:
+    """
+    Converter for Scantron CSV format to txttoqti educational format.
+    
+    Scantron CSV format (based on K-State Canvas documentation):
+        Column A: Question type (MC, MR, TF)
+        Column B: Empty (required but not used)
+        Column C: Point value (1-100, up to 2 decimal places)
+        Column D: Question text
+        Column E: Correct answer (1-5 for a-e, comma-separated for multiple response)
+        Columns F-J: Answer choices (a, b, c, d, e)
+    """
+    
+    @staticmethod
+    def csv_to_educational_format(csv_content: str) -> str:
+        """
+        Convert Scantron CSV format to educational format.
+        
+        Args:
+            csv_content: CSV content as string
+            
+        Returns:
+            Converted content in educational format
+            
+        Raises:
+            ValueError: If CSV format is invalid
+        """
+        lines = csv_content.strip().split('\n')
+        if not lines:
+            raise ValueError("Empty CSV content")
+        
+        educational_lines = []
+        question_number = 1
+        
+        reader = csv.reader(StringIO(csv_content))
+        
+        for row_num, row in enumerate(reader, 1):
+            if not row or len(row) < 5:
+                continue  # Skip empty or incomplete rows
+                
+            try:
+                question_type = row[0].strip().upper()
+                # row[1] is empty/not used
+                point_value = row[2].strip() if len(row) > 2 else "1"
+                question_text = row[3].strip() if len(row) > 3 else ""
+                correct_answer = row[4].strip() if len(row) > 4 else "1"
+                
+                # Get answer choices (columns F-J, indices 5-9)
+                choices = []
+                for i in range(5, min(len(row), 10)):  # Max 5 choices (a-e)
+                    choice_text = row[i].strip()
+                    if choice_text:
+                        choices.append(choice_text)
+                
+                if not question_text:
+                    continue  # Skip rows without question text
+                
+                if not choices:
+                    # If no choices provided, create generic ones
+                    choices = ["a", "b", "c", "d", "e"][:5]
+                
+                # Convert to educational format
+                educational_lines.append(f"Q{question_number}: {question_text}")
+                
+                # Add choices (A), B), C), D), E))
+                for i, choice_text in enumerate(choices):
+                    choice_letter = chr(ord('A') + i)
+                    educational_lines.append(f"{choice_letter}) {choice_text}")
+                
+                # Convert correct answer from number to letter
+                try:
+                    if question_type == "MC":  # Multiple choice
+                        correct_num = int(correct_answer)
+                        if 1 <= correct_num <= len(choices):
+                            correct_letter = chr(ord('A') + correct_num - 1)
+                            educational_lines.append(f"ANSWER: {correct_letter}")
+                        else:
+                            # Default to A if invalid
+                            educational_lines.append("ANSWER: A")
+                    elif question_type == "TF":  # True/False
+                        # For True/False: 1=True=A, 0=False=B
+                        if correct_answer == "1":
+                            educational_lines.append("ANSWER: A")
+                        else:
+                            educational_lines.append("ANSWER: B")
+                    else:
+                        # For other types or MR (multiple response), default to A
+                        educational_lines.append("ANSWER: A")
+                        
+                except (ValueError, IndexError):
+                    # If we can't parse the correct answer, default to A
+                    educational_lines.append("ANSWER: A")
+                
+                educational_lines.append("")  # Blank line between questions
+                question_number += 1
+                
+            except (IndexError, ValueError) as e:
+                raise ValueError(f"Invalid CSV format at row {row_num}: {e}")
+        
+        return '\n'.join(educational_lines)
+    
+    @staticmethod
+    def is_csv_format(content: str) -> bool:
+        """
+        Check if content appears to be in CSV format.
+        
+        Args:
+            content: Text content to check
+            
+        Returns:
+            True if content appears to be CSV format
+        """
+        lines = content.strip().split('\n')
+        if not lines:
+            return False
+            
+        # Check first few lines for CSV patterns
+        csv_indicators = 0
+        for line in lines[:5]:  # Check first 5 lines
+            if not line.strip():
+                continue
+                
+            # Count commas - CSV should have multiple comma-separated fields
+            if line.count(',') >= 4:  # At least 5 fields (MC,,1,Question,1,...)
+                csv_indicators += 1
+                
+            # Check for typical Scantron patterns
+            if line.upper().startswith('MC,') or line.upper().startswith('MR,') or line.upper().startswith('TF,'):
+                csv_indicators += 2
+        
+        return csv_indicators >= 2
