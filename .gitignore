@@ -127,6 +127,7 @@ Thumbs.db
 output_*.xml
 temp/
 tmp/
+*_[0-9]*.zip
 
 # Configuration files with sensitive data
 config.local.*
