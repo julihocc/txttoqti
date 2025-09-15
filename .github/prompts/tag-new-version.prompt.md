@@ -8,6 +8,8 @@ mode: agent
 
 \- Execute .github/prompts/update-documentation.prompt.md to ensure all documentation and version references are up to date.
 
+- Test the codebase to ensure everything is functioning correctly.
+
 \- Inspect Git History and identify version
 
 \- Inspect toml files for version information
