@@ -40,7 +40,9 @@ from .txttoqti import TxtToQti, quick_convert
 # Legacy API exports (still supported)
 from .converter import TxtToQtiConverter
 from .parser import QuestionParser
-from .qti_generator import QTIGenerator
+from .qti21_generator import QTI21Generator
+from .qti12_generator import QTI12Generator
+from .generator_factory import QTIGeneratorFactory
 from .validator import QuestionValidator
 from .smart_converter import SmartConverter
 
@@ -71,7 +73,9 @@ __all__ = [
     # Legacy classes (still supported)
     "TxtToQtiConverter",
     "QuestionParser", 
-    "QTIGenerator",
+    "QTI21Generator",
+    "QTI12Generator", 
+    "QTIGeneratorFactory",
     "QuestionValidator",
     "SmartConverter",
     

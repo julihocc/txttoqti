@@ -28,6 +28,7 @@ Note: For more advanced usage, consider using the Python API:
 
 import argparse
 from .converter import TxtToQtiConverter
+from .generator_factory import QTIGeneratorFactory
 from . import __version__
 
 def main():
@@ -46,12 +47,16 @@ For advanced usage, consider the Python API:
     )
     parser.add_argument('-i', '--input', required=True, help='Path to the input text file containing questions')
     parser.add_argument('-o', '--output', help='Path for the output QTI ZIP file (default: auto-generated)')
+    parser.add_argument('--qti-version', 
+                       choices=QTIGeneratorFactory.get_supported_versions(),
+                       default=QTIGeneratorFactory.get_default_version(),
+                       help=f'QTI version to generate (default: {QTIGeneratorFactory.get_default_version()})')
     parser.add_argument('-v', '--version', action='version', version=f'%(prog)s {__version__}')
 
     args = parser.parse_args()
 
     converter = TxtToQtiConverter()
-    qti_file = converter.convert_file(args.input, args.output)
+    qti_file = converter.convert_file(args.input, args.output, qti_version=getattr(args, 'qti_version'))
     print(f"QTI package created: {qti_file}")
 
 if __name__ == "__main__":

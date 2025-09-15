@@ -15,7 +15,7 @@ from pathlib import Path
 from typing import Optional, List, Union, Any
 from .converter import TxtToQtiConverter
 from .parser import QuestionParser
-from .qti_generator import QTIGenerator
+from .generator_factory import QTIGeneratorFactory
 from .validator import QuestionValidator
 from .models import Question
 from .exceptions import TxtToQtiError, FileError, ParseError, ValidationError
@@ -41,7 +41,6 @@ class TxtToQti:
         """Initialize the TxtToQti converter."""
         self.logger = get_logger(__name__)
         self.parser = QuestionParser()
-        self.qti_generator = QTIGenerator()
         self.validator = QuestionValidator()
         
         # Internal state
@@ -120,12 +119,13 @@ class TxtToQti:
                 raise
             raise ParseError(f"Failed to parse content: {e}")
     
-    def save_to_qti(self, output_path: Union[str, Path, None] = None) -> str:
+    def save_to_qti(self, output_path: Union[str, Path, None] = None, qti_version: Optional[str] = None) -> str:
         """
         Save the loaded questions to a QTI ZIP file.
         
         Args:
             output_path: Path for the output QTI file. If None, generates a name.
+            qti_version: QTI version to generate ('qti12', 'qti21'). Defaults to 'qti12'.
             
         Returns:
             Path to the created QTI file
@@ -146,8 +146,12 @@ class TxtToQti:
             
             output_path = Path(output_path)
             
+            # Create QTI generator based on version
+            qti_generator = QTIGeneratorFactory.create_generator(qti_version)
+            
             # Generate QTI XML
-            qti_xml = self.qti_generator.generate_qti_xml(self._questions)
+            assessment_title = output_path.stem.replace('_', ' ').title()
+            qti_xml = qti_generator.generate_qti_xml(self._questions, assessment_title)
             
             # Use the existing converter to create the package
             converter = TxtToQtiConverter()

@@ -19,9 +19,10 @@ from pathlib import Path
 from typing import Optional, Any
 import zipfile
 import uuid
+from datetime import datetime
 
 from .parser import QuestionParser
-from .qti_generator import QTIGenerator
+from .generator_factory import QTIGeneratorFactory
 from .validator import QuestionValidator
 from .exceptions import ConversionError, FileError
 from .logging_config import get_logger
@@ -38,7 +39,6 @@ class TxtToQtiConverter:
         """Initialize the converter with required components."""
         self.logger = get_logger(__name__)
         self.parser = QuestionParser()
-        self.qti_generator = QTIGenerator()
         self.validator = QuestionValidator()
         
         self.logger.info("TxtToQtiConverter initialized")
@@ -47,6 +47,7 @@ class TxtToQtiConverter:
         self, 
         txt_file: str, 
         output_file: Optional[str] = None, 
+        qti_version: Optional[str] = None,
         **kwargs: Any
     ) -> Optional[str]:
         """
@@ -55,6 +56,7 @@ class TxtToQtiConverter:
         Args:
             txt_file: Path to the input text file containing questions
             output_file: Path for the output QTI ZIP file
+            qti_version: QTI version to generate ('qti12', 'qti21')
             **kwargs: Additional options for conversion
 
         Returns:
@@ -95,12 +97,19 @@ class TxtToQtiConverter:
             for question in questions:
                 self.validator.validate(question)
             
-            # Generate QTI
-            qti_xml = self.qti_generator.generate_qti_xml(questions)
+            # Create QTI generator based on version
+            qti_generator = QTIGeneratorFactory.create_generator(qti_version)
             
-            # Create output ZIP file
+            # Generate QTI
+            assessment_title = input_path.stem.replace('_', ' ').title()
+            qti_xml = qti_generator.generate_qti_xml(questions, assessment_title)
+            
+            # Create output ZIP file with new naming convention
             if output_file is None:
-                output_file = input_path.with_suffix('.zip').name
+                # Generate filename: [name]-[timestamp]-[qtiversion].zip
+                timestamp = datetime.now().strftime('%Y%m%d%H%M%S')
+                qti_version_str = qti_version or QTIGeneratorFactory.get_default_version()
+                output_file = f"{input_path.stem}-{timestamp}-{qti_version_str}.zip"
             
             output_path = Path(output_file)
             self._create_qti_package(qti_xml, output_path)
@@ -155,12 +164,18 @@ class TxtToQtiConverter:
         """
         try:
             with zipfile.ZipFile(output_path, 'w', zipfile.ZIP_DEFLATED) as zf:
-                # Add manifest
-                manifest = self._generate_manifest()
-                zf.writestr('imsmanifest.xml', manifest)
+                # For QTI 1.2, we need to determine the filename from the output_path
+                xml_filename = output_path.stem + '.xml'
                 
-                # Add QTI XML
-                zf.writestr('assessment.xml', qti_xml)
+                # Add QTI XML (QTI 1.2 doesn't need manifest, QTI 2.1 does)
+                if 'qti12' in output_path.name:
+                    # QTI 1.2 format - single XML file
+                    zf.writestr(xml_filename, qti_xml)
+                else:
+                    # QTI 2.1 format - XML + manifest
+                    manifest = self._generate_manifest()
+                    zf.writestr('imsmanifest.xml', manifest)
+                    zf.writestr('assessment.xml', qti_xml)
                 
             self.logger.debug(f"QTI package created: {output_path}")
             
