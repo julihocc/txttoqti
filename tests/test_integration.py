@@ -10,14 +10,14 @@ import os
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..'))
 from src.txttoqti.converter import TxtToQtiConverter
 from src.txttoqti.parser import QuestionParser
-from src.txttoqti.qti_generator import QTIGenerator
+from src.txttoqti.generator_factory import QTIGeneratorFactory
 
 class TestTxtToQtiIntegration(unittest.TestCase):
     
     def setUp(self):
         self.converter = TxtToQtiConverter()
         self.parser = QuestionParser()
-        self.qti_generator = QTIGenerator()
+        self.qti_generator = QTIGeneratorFactory.create_generator('qti12')
 
     def test_conversion_integration(self):
         # Sample text input
