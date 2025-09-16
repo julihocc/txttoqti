@@ -199,6 +199,14 @@ Co-Authored-By: Claude <noreply@anthropic.com>
 - Feedback mechanisms for AI-assisted development quality
 - Transparency about AI usage in project communications
 
+## Version History
+
+### Version 0.7.0 (September 2025)
+- **AI-Enhanced Multiple Response Support**: Comprehensive implementation of Multiple Response question types with AI assistance from Claude
+- **CSV Format Enhancement**: Extended Scantron CSV parsing with A-E choice support and multi-answer parsing
+- **QTI Generator Improvements**: Enhanced QTI 1.2 generation with proper cardinality handling for multiple response questions
+- **Test Data Integration**: Added comprehensive test data for mixed MC/MR question formats
+
 ## Commitment to Excellence
 
 ### Our Promise

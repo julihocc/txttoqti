@@ -30,7 +30,7 @@ Author: Juliho C.C.
 License: MIT
 """
 
-__version__ = "0.6.0"
+__version__ = "0.7.0"
 __author__ = "Juliho C.C."
 __license__ = "MIT"
 
