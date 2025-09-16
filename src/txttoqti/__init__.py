@@ -7,7 +7,7 @@ and other learning management systems.
 
 Main Features:
 - Convert plain text to QTI packages
-- Canvas LMS compatibility 
+- Canvas LMS compatibility
 - Smart conversion with change detection
 - Comprehensive validation
 - No external dependencies (uses only Python standard library)
@@ -69,34 +69,29 @@ __all__ = [
     # Main interface (recommended)
     "TxtToQti",
     "quick_convert",
-    
     # Legacy classes (still supported)
     "TxtToQtiConverter",
-    "QuestionParser", 
+    "QuestionParser",
     "QTI21Generator",
-    "QTI12Generator", 
+    "QTI12Generator",
     "QTIGeneratorFactory",
     "QuestionValidator",
     "SmartConverter",
-    
     # Models
     "Question",
     "QuestionType",
     "Choice",
     "Assessment",
-    
     # Exceptions
     "TxtToQtiError",
     "ParseError",
-    "ValidationError", 
+    "ValidationError",
     "ConversionError",
     "FileError",
-    
     # Utilities
     "clean_text",
     "validate_file",
     "get_file_timestamp",
-    
     # Package info
     "__version__",
     "__author__",
@@ -106,24 +101,26 @@ __all__ = [
 # Educational extension exports (optional import)
 try:
     from .educational import QtiConverter as EducationalQtiConverter
+
     __all__.extend(["EducationalQtiConverter"])
 except ImportError:
     # Educational extension not available
     pass
 
+
 # Module-level convenience function
 def convert_txt_to_qti(txt_file, output_file=None, **kwargs):
     """
     Convenience function to convert a text file to QTI package.
-    
+
     Args:
         txt_file (str): Path to input text file
         output_file (str, optional): Path for output QTI ZIP file
         **kwargs: Additional options for conversion
-        
+
     Returns:
         str: Path to created QTI ZIP file
-        
+
     Example:
         >>> qti_file = convert_txt_to_qti("my_questions.txt")
     """
