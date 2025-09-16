@@ -201,6 +201,12 @@ Co-Authored-By: Claude <noreply@anthropic.com>
 
 ## Version History
 
+### Version 0.8.0 (September 2025)
+- **Total Points Distribution System**: AI-assisted implementation of flexible point allocation across questions
+- **Enhanced CLI Integration**: Improved command-line interfaces with total_points parameter support
+- **Documentation Enhancements**: Updated API and CLI documentation with new features
+- **AI Transparency Improvements**: Enhanced commit prompt guidelines for AI tool disclosure
+
 ### Version 0.7.0 (September 2025)
 - **AI-Enhanced Multiple Response Support**: Comprehensive implementation of Multiple Response question types with AI assistance from Claude
 - **CSV Format Enhancement**: Extended Scantron CSV parsing with A-E choice support and multi-answer parsing
