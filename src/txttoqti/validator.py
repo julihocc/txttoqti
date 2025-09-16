@@ -31,7 +31,7 @@ class QuestionValidator:
 
         Returns:
             bool: True if the question is valid.
-            
+
         Raises:
             ValidationError: If the question is invalid.
         """
@@ -39,22 +39,26 @@ class QuestionValidator:
             # Check if question has text
             if not question.text or not question.text.strip():
                 raise ValidationError(f"Question {question.id} has empty text")
-            
+
             # Check question type specific validations
             if question.question_type == QuestionType.MULTIPLE_CHOICE:
                 self._validate_multiple_choice(question)
+            elif question.question_type == QuestionType.MULTIPLE_RESPONSE:
+                self._validate_multiple_response(question)
             elif question.question_type == QuestionType.TRUE_FALSE:
                 self._validate_true_false(question)
             elif question.question_type == QuestionType.SHORT_ANSWER:
                 self._validate_short_answer(question)
-            
+
             # Check points
             if question.points < 0:
-                raise ValidationError(f"Question {question.id} has negative points: {question.points}")
-            
+                raise ValidationError(
+                    f"Question {question.id} has negative points: {question.points}"
+                )
+
             self.logger.debug(f"Question {question.id} validated successfully")
             return True
-            
+
         except ValidationError:
             raise
         except Exception as e:
@@ -63,42 +67,88 @@ class QuestionValidator:
     def _validate_multiple_choice(self, question: Question) -> None:
         """Validate multiple choice question."""
         if not question.choices:
-            raise ValidationError(f"Multiple choice question {question.id} has no choices")
-        
+            raise ValidationError(
+                f"Multiple choice question {question.id} has no choices"
+            )
+
         if len(question.choices) < 2:
-            raise ValidationError(f"Multiple choice question {question.id} must have at least 2 choices")
-        
+            raise ValidationError(
+                f"Multiple choice question {question.id} must have at least 2 choices"
+            )
+
         correct_count = sum(1 for choice in question.choices if choice.is_correct)
         if correct_count == 0:
-            raise ValidationError(f"Multiple choice question {question.id} has no correct answer")
-        
+            raise ValidationError(
+                f"Multiple choice question {question.id} has no correct answer"
+            )
+
         if correct_count > 1:
-            raise ValidationError(f"Multiple choice question {question.id} has multiple correct answers")
-            
+            raise ValidationError(
+                f"Multiple choice question {question.id} has multiple correct answers"
+            )
+
         # Check all choices have text
         for i, choice in enumerate(question.choices):
             if not choice.text or not choice.text.strip():
-                raise ValidationError(f"Choice {i+1} in question {question.id} has empty text")
+                raise ValidationError(
+                    f"Choice {i + 1} in question {question.id} has empty text"
+                )
+
+    def _validate_multiple_response(self, question: Question) -> None:
+        """Validate multiple response question."""
+        if not question.choices:
+            raise ValidationError(
+                f"Multiple response question {question.id} has no choices"
+            )
+
+        if len(question.choices) < 2:
+            raise ValidationError(
+                f"Multiple response question {question.id} must have at least 2 choices"
+            )
+
+        correct_count = sum(1 for choice in question.choices if choice.is_correct)
+        if correct_count == 0:
+            raise ValidationError(
+                f"Multiple response question {question.id} has no correct answer"
+            )
+
+        # Multiple response questions can have multiple correct answers
+        # (unlike multiple choice)
+
+        # Check all choices have text
+        for i, choice in enumerate(question.choices):
+            if not choice.text or not choice.text.strip():
+                raise ValidationError(
+                    f"Choice {i + 1} in question {question.id} has empty text"
+                )
 
     def _validate_true_false(self, question: Question) -> None:
         """Validate true/false question."""
         if not question.choices:
             raise ValidationError(f"True/false question {question.id} has no choices")
-            
+
         if len(question.choices) != 2:
-            raise ValidationError(f"True/false question {question.id} must have exactly 2 choices")
-        
+            raise ValidationError(
+                f"True/false question {question.id} must have exactly 2 choices"
+            )
+
         correct_count = sum(1 for choice in question.choices if choice.is_correct)
         if correct_count != 1:
-            raise ValidationError(f"True/false question {question.id} must have exactly one correct answer")
+            raise ValidationError(
+                f"True/false question {question.id} must have exactly one correct answer"
+            )
 
     def _validate_short_answer(self, question: Question) -> None:
         """Validate short answer question."""
         # Short answer questions don't need choices, but if they have a correct answer, it should be set
         if question.choices:
-            self.logger.warning(f"Short answer question {question.id} has choices, which will be ignored")
+            self.logger.warning(
+                f"Short answer question {question.id} has choices, which will be ignored"
+            )
 
-    def validate_questions(self, questions: List[Question]) -> List[Tuple[Question, bool]]:
+    def validate_questions(
+        self, questions: List[Question]
+    ) -> List[Tuple[Question, bool]]:
         """
         Validate a list of questions.
 
