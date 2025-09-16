@@ -376,13 +376,11 @@ Gets file modification timestamp.
 
 ### Conversion Options
 
-Common `**kwargs` options for conversion methods:
+Common options for conversion methods:
 
-- `encoding` (str): File encoding (default: 'utf-8')
-- `assessment_title` (str): Title for generated assessment
-- `points_per_question` (float): Default points per question
-- `shuffle_answers` (bool): Whether to shuffle answer choices
-- `show_correct_answers` (bool): Whether to show correct answers in feedback
+- `output_file` (str, optional): Path for output QTI ZIP file (auto-generated if not provided)
+- `qti_version` (str, optional): QTI version to generate ('qti12' or 'qti21')
+- `total_points` (float): Total points for the entire quiz (default: 100.0)
 
 ### Example with Options
 
@@ -390,11 +388,25 @@ Common `**kwargs` options for conversion methods:
 converter = TxtToQtiConverter()
 qti_file = converter.convert_file(
     "questions.txt",
-    assessment_title="Final Exam",
-    points_per_question=2.0,
-    shuffle_answers=True,
-    show_correct_answers=False
+    output_file="final_exam.zip",
+    qti_version="qti21",
+    total_points=100.0
 )
+```
+
+### Point Distribution
+
+The `total_points` parameter distributes points evenly across questions that use the default point value (1.0). Questions with custom points specified via `POINTS: X` in the text format are left unchanged:
+
+```python
+# For a file with 10 questions (all using default points):
+# Each question will receive 100.0 / 10 = 10.0 points
+
+# For a file with mixed points:
+# Q1: Default (will get calculated points)
+# Q2: Custom (POINTS: 20) - keeps 20 points
+# Q3: Default (will get calculated points)
+# Remaining points distributed among default questions
 ```
 
 ## Error Handling Best Practices

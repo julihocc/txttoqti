@@ -51,12 +51,19 @@ For advanced usage, consider the Python API:
                        choices=QTIGeneratorFactory.get_supported_versions(),
                        default=QTIGeneratorFactory.get_default_version(),
                        help=f'QTI version to generate (default: {QTIGeneratorFactory.get_default_version()})')
+    parser.add_argument('--total-points', type=float, default=100.0,
+                       help='Total points for the entire quiz (default: 100.0)')
     parser.add_argument('-v', '--version', action='version', version=f'%(prog)s {__version__}')
 
     args = parser.parse_args()
 
     converter = TxtToQtiConverter()
-    qti_file = converter.convert_file(args.input, args.output, qti_version=getattr(args, 'qti_version'))
+    qti_file = converter.convert_file(
+        args.input, 
+        args.output, 
+        qti_version=getattr(args, 'qti_version'),
+        total_points=args.total_points
+    )
     print(f"QTI package created: {qti_file}")
 
 if __name__ == "__main__":

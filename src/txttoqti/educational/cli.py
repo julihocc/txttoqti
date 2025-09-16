@@ -73,6 +73,13 @@ converts questions to Canvas-compatible QTI format.
         help="Enable verbose output"
     )
     
+    parser.add_argument(
+        "--total-points",
+        type=float,
+        default=100.0,
+        help="Total points for the entire quiz (default: 100.0)"
+    )
+    
     return parser
 
 
@@ -103,7 +110,7 @@ def main() -> int:
             return run_interactive_mode(converter)
         
         # Perform conversion
-        success = converter.convert(force=args.force)
+        success = converter.convert(force=args.force, total_points=getattr(args, 'total_points'))
         return 0 if success else 1
         
     except TxtToQtiError as e:
@@ -230,7 +237,7 @@ def run_interactive_mode(converter: QtiConverter) -> int:
     proceed = input("Proceed with conversion? (Y/n): ").strip().lower()
     if proceed in ('', 'y', 'yes'):
         try:
-            success = converter.convert(force=True)
+            success = converter.convert(force=True)  # Uses default total_points=100.0
             return 0 if success else 1
         except Exception as e:
             print(f"❌ Conversion failed: {e}")

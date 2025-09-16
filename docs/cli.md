@@ -16,6 +16,8 @@ txttoqti [OPTIONS]
 
 - `-i, --input FILE`: Path to the input text file containing questions (required)
 - `-o, --output FILE`: Path for the output QTI ZIP file (optional)
+- `--qti-version {qti12,qti21}`: QTI version to generate (default: qti12)
+- `--total-points FLOAT`: Total points for the entire quiz (default: 100.0)
 - `-v, --version`: Show the version of the txttoqti package
 - `-h, --help`: Show help message and exit
 
@@ -24,6 +26,16 @@ txttoqti [OPTIONS]
 Convert a text file to QTI package:
 ```bash
 txttoqti -i questions.txt -o my_quiz.zip
+```
+
+Convert with custom total points:
+```bash
+txttoqti -i questions.txt --total-points 50.0
+```
+
+Convert with QTI 2.1 format and custom points:
+```bash
+txttoqti -i sample_questions.txt --qti-version qti21 --total-points 100.0
 ```
 
 Convert with automatic output naming:
@@ -38,7 +50,7 @@ txttoqti --version
 
 You can also use the module form:
 ```bash
-python -m txttoqti.cli -i questions.txt -o output.zip
+python -m txttoqti.cli -i questions.txt -o output.zip --total-points 75.0
 ```
 
 ## Educational CLI (`txttoqti-edu`)
@@ -57,6 +69,7 @@ txttoqti-edu [OPTIONS]
 - `--force`: Force regeneration even if no changes are detected
 - `--interactive`: Enable interactive mode for troubleshooting format issues
 - `--path PATH`: Specify working directory (defaults to current directory)
+- `--total-points FLOAT`: Total points for the entire quiz (default: 100.0)
 - `--verbose, -v`: Enable verbose output
 - `-h, --help`: Show help message and exit
 

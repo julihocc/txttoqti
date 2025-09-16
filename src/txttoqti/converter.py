@@ -48,6 +48,7 @@ class TxtToQtiConverter:
         txt_file: str, 
         output_file: Optional[str] = None, 
         qti_version: Optional[str] = None,
+        total_points: float = 100.0,
         **kwargs: Any
     ) -> Optional[str]:
         """
@@ -57,6 +58,7 @@ class TxtToQtiConverter:
             txt_file: Path to the input text file containing questions
             output_file: Path for the output QTI ZIP file
             qti_version: QTI version to generate ('qti12', 'qti21')
+            total_points: Total points for the entire quiz (default: 100.0)
             **kwargs: Additional options for conversion
 
         Returns:
@@ -92,6 +94,9 @@ class TxtToQtiConverter:
             if not questions:
                 self.logger.warning("No questions found in input file")
                 return None
+            
+            # Distribute total points evenly across questions that use default points
+            self._distribute_total_points(questions, total_points)
             
             # Validate questions
             for question in questions:
@@ -181,6 +186,56 @@ class TxtToQtiConverter:
             
         except Exception as e:
             raise ConversionError(f"Failed to create QTI package: {e}", "package_creation", e)
+    
+    def _distribute_total_points(self, questions, total_points: float) -> None:
+        """
+        Distribute total points evenly across questions that use default points (1.0).
+        
+        Questions with custom points (not 1.0) are left unchanged, and the total_points
+        are distributed only among questions that use the default point value.
+        
+        Args:
+            questions: List of Question objects
+            total_points: Total points to distribute across default-point questions
+        """
+        if not questions or total_points <= 0:
+            return
+        
+        # Find questions using default points (1.0)
+        default_questions = [q for q in questions if q.points == 1.0]
+        custom_questions = [q for q in questions if q.points != 1.0]
+        
+        if not default_questions:
+            # All questions have custom points, nothing to distribute
+            self.logger.info("All questions have custom points, total_points parameter ignored")
+            return
+        
+        # Calculate points already allocated to custom questions
+        custom_points_total = sum(q.points for q in custom_questions)
+        
+        # Calculate remaining points to distribute among default questions
+        if custom_points_total >= total_points:
+            self.logger.warning(
+                f"Custom question points ({custom_points_total}) exceed or equal total_points ({total_points}). "
+                f"Default questions will receive minimal points."
+            )
+            points_per_default_question = max(0.1, (total_points - custom_points_total) / len(default_questions))
+        else:
+            remaining_points = total_points - custom_points_total
+            points_per_default_question = remaining_points / len(default_questions)
+        
+        # Distribute points to default questions
+        for question in default_questions:
+            question.points = round(points_per_default_question, 2)
+        
+        # Log the distribution
+        actual_total = sum(q.points for q in questions)
+        self.logger.info(
+            f"Distributed {total_points} total points: "
+            f"{len(default_questions)} default questions get {points_per_default_question:.2f} points each, "
+            f"{len(custom_questions)} custom questions keep their original points. "
+            f"Actual total: {actual_total:.2f}"
+        )
     
     def _generate_manifest(self) -> str:
         """

@@ -100,12 +100,13 @@ class QtiConverter:
         else:
             print(f"🔄 QTI file will be created: {output_path}")
     
-    def convert(self, force: bool = False) -> bool:
+    def convert(self, force: bool = False, total_points: float = 100.0) -> bool:
         """
         Convert educational questions to QTI format.
         
         Args:
             force: Force regeneration even if file hasn't changed
+            total_points: Total points for the entire quiz (default: 100.0)
             
         Returns:
             True if conversion was successful
@@ -152,7 +153,7 @@ class QtiConverter:
             # Generate QTI directly using the updated parser that handles educational format
             print(f"🔄 Converting {self.input_filename} to QTI format...")
             qti_output = self.txttoqti_converter.convert_file(
-                str(input_path), str(output_path)
+                str(input_path), str(output_path), total_points=total_points
             )
             
             print(f"✅ QTI file created: {qti_output}")
